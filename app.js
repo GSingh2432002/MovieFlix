@@ -1,65 +1,78 @@
-// API-KEY : c269bfddcefc555a003c0023a51c64f0
+// API-KEY: c269bfddcefc555a003c0023a51c64f0
 
 // URLS
-const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=c269bfddcefc555a003c0023a51c64f0&page=1";
-
-const SEARCHAPI = "https://api.themoviedb.org/3/search/movie?api_key=c269bfddcefc555a003c0023a51c64f0&query=";
-
+const APIURL =
+  " https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=c269bfddcefc555a003c0023a51c64f0";
+const SEARCHAPI =
+  " https://api.themoviedb.org/3/search/movie?api_key=c269bfddcefc555a003c0023a51c64f0";
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+
 
 const form = document.querySelector("form");
 const main = document.querySelector("main");
 const search = document.getElementById("search");
 const container = document.querySelector(".container");
 
+
 getMovies(APIURL);
 
-async function getMovies(url){
-    const resp = await fetch(url);
-    const respData = await resp.json();
-    showMovies(respData.results);
+
+async function getMovies(url) {
+  const resp = await fetch(url);
+  const respData = await resp.json();
+  showMovies(respData.results);
+  // console.log(respData);
 }
 
-function showMovies(movies){
-    main.innerHTML = "";
 
-    movies.forEach((movie) => {
-        const {
-            poster_path,
-            title,
-            vote_average,
-            release_date,
-            overview,
-            backdrop_path,
-            id,
-        } = movie;
+function showMovies(movies) {
+  main.innerHTML = "";
 
-        const movieEl = document.createElement("div");
-        movieEl.setAttribute("data-id", `${id}`);
+  movies.forEach((movie) => {
+    const {
+      poster_path,
+      title,
+      vote_average,
+      release_date,
+      overview,
+      backdrop_path,
+      id,
+    } = movie;
 
-        movieEl.innerHTML = `
-                        <img src="${IMGPATH + poster_path}" alt="${title}"/>
-                        <div class="primary-info">
-                        <h3>${title}</h3>
-                        <div class="secondary-info">
-                        <p class"date">${convertTime(release_date)}</p>
-                        <span class="${getClassByRate(
-                            vote_average
-                        )}">${vote_average}</span>
-                        </div>
-                        </div>
-                        `;
-        main.appendChild(movieEl);
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
 
-        movieEl.addEventListener("click", () => {
-            container.classList.add("show");
+    movieEl.setAttribute("data-id", `${id}`);
 
-            container.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%), url(${IMGPATH + backdrop_path})`;
+    movieEl.innerHTML = `
+                  <img src="${IMGPATH + poster_path}" alt="${title}"/>
+                  <div class="primary-info">
+                      <h3>${title}</h3>
+                      <div class ="secondary-info">
+                      <p class"date">${convertTime(release_date)}</p>
+                      <span class="${getClassByRate(
+      vote_average
+    )}">${vote_average}</span>
+                  </div>
+                  </div>
+              `;
+    main.appendChild(movieEl);
 
-            container.innerHTML = `
-            <img src="${IMGPATH + poster_path}" alt="${title}"/>
 
-            <div class ="rate">
+    movieEl.addEventListener("click", () => {
+      container.classList.add("show");
+
+      container.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%), url( ${IMGPATH + backdrop_path
+        } )`;
+
+      container.innerHTML = `
+                              <img src="${IMGPATH + poster_path
+        }" alt="${title}"/>
+                              <div class="wrapper">
+                                  <h1>${title} <span class="light-text">(${convertOnlyYear(
+          release_date
+        )})</span></h1>
+                                  <div class ="rate">
                                   <span class="${getClassByRate(
           vote_average
         )}">${vote_average}</span>
@@ -75,42 +88,45 @@ function showMovies(movies){
         )}</p>
                           </div>
                               </div>`;
-        });
     });
+  });
 }
 
+
 const convertOnlyYear = (time) => {
-    return new Date(time).toLocaleDateString("en-us", {
-        year: "numeric",
-    });
+  return new Date(time).toLocaleDateString("en-us", {
+    year: "numeric",
+  });
 };
 
 const convertTime = (time) => {
-    return new Date(time).toLocaleDateString("en-us", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+  return new Date(time).toLocaleDateString("en-us", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
 
+
 form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const searchTerm = search.value;
+  const searchTerm = search.value;
 
-    if(searchTerm) {
-        getMovies(SEARCHAPI + searchTerm);
-        search.value = "";
-        container.classList.remove("show");
-    }
+  if (searchTerm) {
+    getMovies(SEARCHAPI + searchTerm);
+    search.value = "";
+    container.classList.remove("show");
+  }
 });
 
+
 function getClassByRate(vote) {
-    if (vote >= 8){
-        return 'green';
-    } else if (vote >= 5){
-        return 'orange';
-    } else {
-        return 'red';
-    }
+  if (vote >= 8) {
+    return "green";
+  } else if (vote >= 5) {
+    return "orange";
+  } else {
+    return "red";
+  }
 }
