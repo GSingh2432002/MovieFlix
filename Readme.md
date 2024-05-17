@@ -10,4 +10,4 @@ You can search for movies and see what kind of rating it has, release date and i
 * `JavaScript`
 
 ## How it looks 👀
-Live Demo:
+Live Demo: https://movie-flix-one-steel.vercel.app/
