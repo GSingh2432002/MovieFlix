@@ -6,11 +6,11 @@
 }
 
 :root {
-  --navy-blue: #111722;
-  --navy-blue-dark: #131720;
+  --navy-blue: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);;
+  --navy-blue-dark: #79c2d0;
   --oxford-blue-light: #162032cc;
   --oxford-blue: #162032;
-  --blue: #66bfbf;
+  --blue: #71adb5;
   --off-white: #e0e0e0;
   --white: #ffffff;
 }
